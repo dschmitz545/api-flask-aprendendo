@@ -1,0 +1,55 @@
+version: "3"
+services:
+  db:
+    restart: always
+    build:
+      context: ./db_post
+      dockerfile: Dockerfile
+    ports:
+        - "${POSTGRES_PORT}:5432"
+    volumes:
+        - db-data:/var/lib/postgresql/data
+    environment:
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+        - backnet
+  pgadmin:
+    restart: always
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASS}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    depends_on:
+      - db
+    networks:
+      - backnet
+  backend:
+    build: api
+    restart: always
+    ports:
+      - "${API_HOST_HTTP}:5000"
+    networks:
+      - backnet
+      - frontnet
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "${NGINX_HOST_HTTP_PORT}:80"
+      - "${NGINX_HOST_HTTPS_PORT}:443"
+    networks:
+      - frontnet
+volumes:
+  db-data:
+secrets:
+  db-password:
+    file: db/password.txt
+networks:
+  backnet:
+  frontnet:
