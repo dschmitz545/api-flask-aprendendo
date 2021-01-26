@@ -243,8 +243,8 @@ CREATE TABLE empbolsa
         REFERENCES pais (codigo_pai) MATCH SIMPLE
 );
 
-COMMENT ON TABLE empbolsa 
-    IS 'Empresas listadas na bolsa'; 
+COMMENT ON TABLE empbolsab3 
+    IS 'Empresas listadas na b3'; 
 
 COMMENT ON COLUMN empbolsa.codigo_emb 
     IS 'Codigo da empresa'; 
@@ -257,12 +257,6 @@ COMMENT ON COLUMN empbolsa.apelid_emb
 
 COMMENT ON COLUMN empbolsa.codcvm_emb 
     IS 'Codigo CVM da empresa'; 
-
-COMMENT ON COLUMN empbolsa.coduf_emb 
-    IS 'UF da empresa'; 
-
-COMMENT ON COLUMN empbolsa.codpai_emb 
-    IS 'Pais da empresa'; 
 
 COMMENT ON COLUMN empbolsa.ativo_emb 
     IS 'Empresa ativa?'; 
@@ -296,4 +290,4 @@ COMMENT ON COLUMN tickerb3.codemb_tb3
     IS 'código da empresa';
 	
 COMMENT ON COLUMN tickerb3.ativo_tb3
-IS 'código da empresa';
+    IS 'ticker ativo';
