@@ -9,6 +9,7 @@ share
 # Sqllite
 data.db
 
+
 .vscode/settings.json
 .vscode
 .vscode/

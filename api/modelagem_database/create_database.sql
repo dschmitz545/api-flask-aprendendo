@@ -11,13 +11,14 @@ CREATE SEQUENCE database_codigo_dat_seq
     MINVALUE 1
     MAXVALUE 2147483647
     CACHE 1;
-
+/*
 CREATE SEQUENCE pais_codigo_pai_seq 
     INCREMENT 1 
     START 1 
     MINVALUE 1 
     MAXVALUE 2147483647 
     CACHE 1;
+
 
 CREATE SEQUENCE uf_codigo_uf_seq 
     INCREMENT 1 
@@ -32,7 +33,7 @@ CREATE SEQUENCE municipio_codigo_mun_seq
     MINVALUE 1
     MAXVALUE 2147483647
     CACHE 1;
-
+*/
 
 CREATE SEQUENCE empbolsa_codigo_emb_seq
     INCREMENT 1
@@ -118,7 +119,7 @@ COMMENT ON COLUMN usuario.telcom_usu
 CREATE TABLE pais
 
 (
-    codigo_pai integer NOT NULL DEFAULT nextval('pais_codigo_pai_seq'::regclass),
+    codigo_pai integer NOT NULL, -- DEFAULT nextval('pais_codigo_pai_seq'::regclass),
     descri_pai character(250) COLLATE pg_catalog."default" NOT NULL,
     codibg_pai integer,
     codscx_pai integer,
@@ -155,18 +156,18 @@ COMMENT ON COLUMN pais.codirr_pai
 
 CREATE TABLE uf
 (
-    codigo_uf integer NOT NULL DEFAULT nextval('uf_codigo_uf_seq'::regclass),
+    -- codibg_uf integer,
+    codigo_uf integer NOT NULL, -- DEFAULT nextval('uf_codigo_uf_seq'::regclass),
     codpai_uf integer NOT NULL,
     sigla_uf character(2) COLLATE pg_catalog."default" NOT NULL,
     descri_uf character(250) COLLATE pg_catalog."default" NOT NULL,
     cnpj_uf character(20) COLLATE pg_catalog."default" NOT NULL,
     utcinv_uf integer,
     utcver_uf integer,
-    codibg_uf integer,
     CONSTRAINT codigo_uf PRIMARY KEY (codigo_uf),
     CONSTRAINT unique_cnpj_uf UNIQUE (cnpj_uf)
         INCLUDE(cnpj_uf),
-    CONSTRAINT unique_codibg_uf UNIQUE (codibg_uf),
+   --  CONSTRAINT unique_codibg_uf UNIQUE (codibg_uf),
     CONSTRAINT codpai_uf FOREIGN KEY (codpai_uf)
         REFERENCES pais (codigo_pai) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -191,17 +192,18 @@ COMMENT ON COLUMN uf.utcinv_uf
 COMMENT ON COLUMN uf.utcver_uf
     IS 'UTC horario de verao';
 	
+/*
 COMMENT ON COLUMN uf.codibg_uf
     IS 'Codigo da uf do IBGE';
-
+*/
 CREATE TABLE municipio
 (
-    codigo_mun integer NOT NULL DEFAULT nextval('municipio_codigo_mun_seq'::regclass),
-    codibg_mun integer NOT NULL,
+    codigo_mun integer NOT NULL, -- DEFAULT nextval('municipio_codigo_mun_seq'::regclass),
+    -- codibg_mun integer NOT NULL,
     descri_mun character(250) COLLATE pg_catalog."default" NOT NULL,
     coduf_mun integer,
     CONSTRAINT municipio_pkey PRIMARY KEY (codigo_mun),
-    CONSTRAINT unique_codibg_mun UNIQUE (codibg_mun),
+   -- CONSTRAINT unique_codibg_mun UNIQUE (codibg_mun),
     CONSTRAINT fk_municipio_uf FOREIGN KEY (coduf_mun)
         REFERENCES public.uf (codigo_uf) MATCH SIMPLE
 );
@@ -211,10 +213,10 @@ COMMENT ON TABLE municipio
 
 COMMENT ON COLUMN municipio.codigo_mun
     IS 'Código';
-	
+/*
 COMMENT ON COLUMN municipio.codibg_mun
     IS 'Código municipios do IBGE';
-
+*/
 COMMENT ON COLUMN municipio.descri_mun
     IS 'Descrição municipios';
 	
@@ -243,7 +245,7 @@ CREATE TABLE empbolsa
         REFERENCES pais (codigo_pai) MATCH SIMPLE
 );
 
-COMMENT ON TABLE empbolsab3 
+COMMENT ON TABLE empbolsa
     IS 'Empresas listadas na b3'; 
 
 COMMENT ON COLUMN empbolsa.codigo_emb 
